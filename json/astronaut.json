@@ -1,0 +1,11 @@
+{
+    "name": "Astronaut",
+    "description": "Astronaut, Stout",
+    "image": "ipfs://QmV7erPeurh4RytqBtN8pd5UzsS5msdw9japDeejiMNndz/Astronaut.jpg",
+    "attributes": [
+        {
+            "trait_type": "Artistic",
+            "value": 90
+        }
+    ]
+}

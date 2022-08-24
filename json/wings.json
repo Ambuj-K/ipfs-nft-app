@@ -1,0 +1,11 @@
+{
+    "name": "Wings",
+    "description": "Wings, Beautiful",
+    "image": "ipfs://QmV7erPeurh4RytqBtN8pd5UzsS5msdw9japDeejiMNndz/Wings.jpg",
+    "attributes": [
+        {
+            "trait_type": "Artistic",
+            "value": 80
+        }
+    ]
+}
