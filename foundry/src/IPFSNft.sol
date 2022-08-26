@@ -1,11 +1,13 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 
-error IPFSNft__RangeOutOFBounds; 
+error IPFSNft__RangeOutOFBounds(); 
+error IPFSNft__LowETHSent();
 
 contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
     //Chainlink Variables
@@ -17,7 +19,9 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
     uint32 private constant NUM_WORDS =1;
 
     //Additionals
-    mapping (uint256=> address) requestIDToCaller;
+    mapping (uint256=> address) internal requestIDToCaller;
+    string[] internal i_artUris;
+    uint256 internal i_mintCost;
     
     //NFT
     uint256 private nft_tokencounter;
@@ -29,6 +33,7 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
         Flowers,
         Wings
     }
+
     string public constant TOKEN_URI = "ipfs://QmPT14g8u2BrsZnLU2eQp7jy5Dwb3LZ2Wfvj53Ti4dX573/astronaut.json"; 
 
     constructor(
@@ -36,7 +41,8 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
         uint64 subscriptionId, 
         bytes32 gasLane, 
         uint32 callbackGasLimit,
-        string[3] artURIs
+        string[3] memory artUris,
+        uint256 mintCost
         ) 
     ERC721("IPFS NFT","IN") 
     VRFConsumerBaseV2(vrfCoordinatorV2){
@@ -44,7 +50,8 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
         i_subscriptionId = subscriptionId;
         i_gasLane = gasLane;
         i_callbackGasLimit = callbackGasLimit;
-
+        i_artUris = artUris;
+        i_mintCost = mintCost;
     }
 
     // function mintUpCountNft() public returns (uint256){
@@ -53,7 +60,10 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
     //     return nft_tokencounter;
     // }
 
-    function getRequestID() public returns (uint256 requestID) {
+    function getRequestID() public payable  returns (uint256 requestID) {
+        if (msg.sender < i_mintCost) {
+            revert IPFSNft__LowETHSent();
+        }
         requestID = i_vrfCoordinatorV2.requestRandomWords(
             i_gasLane,
             i_subscriptionId,
@@ -80,7 +90,7 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
         uint256 rangeValue = randomWords[0] % MAX_PERCENTAGE_VALUE;
         ArtVal artVal = getArtValuedName(rangeValue);
         _safeMint(nftOwner, tokenId);  
-        _setTokenURI(tokenId, art_uris(uint256(artVal)));
+        _setTokenURI(tokenId, i_artUris[uint256(artVal)]);
     }
 
     function getArtValuedName(uint256 rangeValue) public pure returns (ArtVal){
