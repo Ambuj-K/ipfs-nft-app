@@ -5,11 +5,14 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
+//Error Types
 error IPFSNft__RangeOutOFBounds(); 
 error IPFSNft__LowETHSent();
+error IPFSNft__TransferFailed();
 
-contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
+contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable{
     //Chainlink Variables
     VRFCoordinatorV2Interface private immutable i_vrfCoordinatorV2;
     uint64 private immutable i_subscriptionId;
@@ -34,7 +37,9 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
         Wings
     }
 
-    string public constant TOKEN_URI = "ipfs://QmPT14g8u2BrsZnLU2eQp7jy5Dwb3LZ2Wfvj53Ti4dX573/astronaut.json"; 
+    //Event Handling
+    event requestedNFT(uint256 indexed requestId, address requester);
+    event mintedNFT(ArtVal artVal, address minter);
 
     constructor(
         address vrfCoordinatorV2, 
@@ -54,14 +59,14 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
         i_mintCost = mintCost;
     }
 
-    // function mintUpCountNft() public returns (uint256){
-    //     _mintSafe(msg.sender, nft_tokencounter);
-    //     nft_tokencounter = nft_tokencounter+1;
-    //     return nft_tokencounter;
-    // }
+    function withdraw() public onlyOwner {
+        uint256 amount = address(this).balance;
+        (bool success,) = payable(msg.sender).call{value: amount}("");
+        if(!success) { revert IPFSNft__TransferFailed();}
+    }
 
-    function getRequestID() public payable  returns (uint256 requestID) {
-        if (msg.sender < i_mintCost) {
+    function requestNft() public payable returns (uint256 requestID) {
+        if (msg.value < i_mintCost) {
             revert IPFSNft__LowETHSent();
         }
         requestID = i_vrfCoordinatorV2.requestRandomWords(
@@ -72,30 +77,25 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
             NUM_WORDS
         );
         requestIDToCaller[requestID] = msg.sender;
-
-    }
-
-    function tokenCounterGet() public view returns (uint256){
-        return nft_tokencounter;
-    }
-
-    function requestRandomWords() internal {
-
+        emit requestedNFT(requestID, msg.sender);
     }
 
     function fulfillRandomWords(uint256 requestID, uint256[] memory randomWords) internal override {
         address nftOwner = requestIDToCaller[requestID];
         uint256 tokenId = nft_tokencounter;
+        nft_tokencounter = nft_tokencounter+1;
 
         uint256 rangeValue = randomWords[0] % MAX_PERCENTAGE_VALUE;
         ArtVal artVal = getArtValuedName(rangeValue);
         _safeMint(nftOwner, tokenId);  
         _setTokenURI(tokenId, i_artUris[uint256(artVal)]);
+
+        emit mintedNFT(artVal, nftOwner);
     }
 
     function getArtValuedName(uint256 rangeValue) public pure returns (ArtVal){
         uint256 summation = 0;
-        uint256[3] memory rangeChanceArray = getRangeChanceArray();
+        uint256[3] memory rangeChanceArray = rangesArrayGetter();
         for(uint256 i=0; i<rangeChanceArray.length; i++){
             if (rangeValue >= summation && rangeValue < summation+rangeChanceArray[i]){
                 return ArtVal(i);
@@ -105,12 +105,19 @@ contract IPFSNft is ERC721URIStorage, VRFConsumerBaseV2{
         revert IPFSNft__RangeOutOFBounds();
     }
 
-    function tokenURI(uint256) public pure override returns (string memory){
-        return TOKEN_URI;
-    }
-
-    function getRangeChanceArray() public pure returns (uint256[3] memory){
+    function rangesArrayGetter() public pure returns (uint256[3] memory){
         return [10,30,MAX_PERCENTAGE_VALUE];
     }
 
+    function mintFreeGetter() public view returns(uint256){
+        return i_mintCost;
+    }
+
+    function artURIsGetter(uint256 index) public view returns(string memory){
+        return i_artUris[index];
+    }
+
+    function tokenCounterGetter() public view returns (uint256){
+        return nft_tokencounter;
+    }
 }
