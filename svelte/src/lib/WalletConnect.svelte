@@ -22,4 +22,21 @@
     }
 </script>
 
-<button on:click={connectWallet}>Attach Wallet</button>
+<div class="WalletAdd">
+<button class="bttn" on:click={connectWallet}>Attach Wallet</button>
+</div>
+ 
+<style>
+.WalletAdd {
+    border-radius: 5px;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+    background-color: wheat;
+    box-shadow: 1px 4px 1px rgba(0,0,0,0.3);
+}
+.bttn {
+        background-color: pink;
+        text-decoration: aqua;
+    }
+</style>
