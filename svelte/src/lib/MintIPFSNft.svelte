@@ -8,13 +8,23 @@
         contract: null 
     };
 
+    $: NFTs = null;
+
     async function Mint() {
-        web3Props.contract.requestNft({
+        NFTs = await web3Props.contract.requestNft({
+            value: 60000000,
             gasLimit: 100000
+        });
+        web3Props.contract.on("requestedNFT", (addr) => { 
+            
         });
     }
 </script>
 
 <div class='wrapper'>
+    {#if !NFTs}
     <button on:click={Mint}>Mint An NFT</button>
+    {:else}
+    RequestID: {NFTs}
+    {/if}
 </div>
