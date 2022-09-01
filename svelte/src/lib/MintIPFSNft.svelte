@@ -13,13 +13,12 @@
     $: status = null;
 
     async function Mint() {
+        status = "MINTING...";
         await web3Props.contract.requestNft({
             value: 60000000,
             gasLimit: 100000
         });
-        web3Props.contract.on("requestedNFT", async (request_id,addr) =>  {
-            status="Loading..."
-        });
+
         web3Props.contract.on("mintedNFT", async (uri_no,addr) =>  { 
            NFT_json = await web3Props.contract.artURIsGetter(uri_no);
            const response = await fetch("https://api.ipfsbrowser.com/ipfs/get.php?hash="+NFT_json.split("//")[1]);
@@ -31,15 +30,20 @@
 </script>
 
 <div class='wrapper'>
-    {#if !NFT_json}
+    {#if !NFT_json & status!="MINTING..."}
     <button class='bttn' on:click={Mint}>Mint An NFT</button>
     <br/>
-    {:else if status=="Loading..."}
-    {status}
+    {:else if status=="MINTING..."}
+    <div class="loading">
+        {status}
+    </div> 
     <br/>
     {:else}
-    {status}
     {#if image_url}
+    <div class="loaded">
+        {status}
+    </div> 
+    <br/>
         <img class="image_div" src={image_url} alt="Loading..."/>
     {/if}
     {/if}
@@ -63,5 +67,25 @@
         box-shadow: 1px 4px 1px rgba(0,0,0,0.3);
         width: 500px;
         height: 500px;
+    }
+    .loading{
+        background-color: pink;
+        text-decoration: aqua;
+        width: 100px;
+        height: 25px;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        text-shadow: 0ex;
+    }
+    .loaded{
+        background-color: pink;
+        text-decoration: aqua;
+        width: 100px;
+        height: 25px;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        text-shadow: 0ex;
     }
 </style>
