@@ -12,10 +12,18 @@ WIP - Svelte - Basic Frontend ✅
 
 https://ipfsnftminter.ambujkumar4.repl.co/
 
-<img width="1433" alt="Screenshot 2022-09-02 at 1 19 07 AM" src="https://user-images.githubusercontent.com/43566170/187999946-d98655e7-954d-42c8-90c0-e2d187ba53d2.png">
+<img width="1426" alt="Screenshot 2022-09-02 at 1 19 07 AM" src="https://user-images.githubusercontent.com/43566170/188001805-2d4625f8-560a-457d-8d59-5f15c7f5fdc1.png">
+<img width="1432" alt="Screenshot 2022-09-02 at 1 19 41 AM" src="https://user-images.githubusercontent.com/43566170/188001807-6aa972c2-5d0e-42e0-a7d6-abe1ed02f058.png">
+<img width="1426" alt="Screenshot 2022-09-02 at 1 21 54 AM" src="https://user-images.githubusercontent.com/43566170/188001817-a3f9fe71-57cf-4092-8a68-6eee8a8edab4.png">
+<img width="1437" alt="Screenshot 2022-09-02 at 1 16 53 AM" src="https://user-images.githubusercontent.com/43566170/188001786-291cf33d-5efd-415b-9beb-6173dfa9bf9d.png">
 
-<img width="1440" alt="Screenshot 2022-09-02 at 1 19 41 AM" src="https://user-images.githubusercontent.com/43566170/188000280-7ee4a811-421d-4d68-b8cd-f96b64d015e4.png">
 
-<img width="1436" alt="Screenshot 2022-09-02 at 1 21 54 AM" src="https://user-images.githubusercontent.com/43566170/188000407-90290aab-a01e-4be4-b8a2-13ada7dbb1e4.png">
+NFTs and associated JSONs updated on IPFS pinned via Pinata via JS.
 
-<img width="1437" alt="Screenshot 2022-09-02 at 1 16 53 AM" src="https://user-images.githubusercontent.com/43566170/187999752-7e086435-295b-4694-89ce-902fc61eaa3a.png">
+Credits for NFT content:
+
+<a href='https://www.freepik.com/vectors/wings'>Wings vector created by rawpixel.com - www.freepik.com</a>
+
+<a href='https://www.freepik.com/vectors/rose-border'>Rose border vector created by orchidart - www.freepik.com</a>
+
+<a href='https://www.freepik.com/vectors/job-opportunity'>Job opportunity vector created by rawpixel.com - www.freepik.com</a>
