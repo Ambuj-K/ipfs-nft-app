@@ -1,9 +1,9 @@
 # ipfs-nft-app
 Mint NFTs hosted on IPFS 
 
-TDDs coverge - Done
+Unit test coverge - Almost done
 
-WIP - Optimising for Gas after initial changes
+WIP - Optimising for Gas after initial changes - Almost Done
 
-WIP - Svelte - Basic Frontend
+WIP - Svelte - Basic Frontend ✅
 
