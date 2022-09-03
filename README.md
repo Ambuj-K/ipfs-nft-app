@@ -18,7 +18,7 @@ https://ipfsnftminter.ambujkumar4.repl.co/
 <img width="1437" alt="Screenshot 2022-09-02 at 1 16 53 AM" src="https://user-images.githubusercontent.com/43566170/188001786-291cf33d-5efd-415b-9beb-6173dfa9bf9d.png">
 
 
-NFTs and associated JSONs updated on IPFS pinned via Pinata via JS.
+NFTs and associated JSONs updated on IPFS pinned via Pinãta via JS.
 
 Credits for NFT content:
 
