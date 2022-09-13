@@ -7,6 +7,7 @@ WIP - Optimising for Gas after initial changes - Almost Done
 
 WIP - Svelte - Basic Frontend ✅
 
+Uses Chainlink Oracle VRF for decentalized NFT randomisation.
 
 # check it out
 
