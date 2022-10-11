@@ -53,7 +53,7 @@ contract TestNFTMinter is DSTest {
     function testRandomNumberGen() public {
         requestId = ipfsnftObj.requestNft{value: 100000 wei}();
         emit log_uint(requestId);
-        assertTrue(true);
+        assertTrue(requestId!=0);
     }
 
 }
